@@ -17,6 +17,11 @@ public class Main extends JFrame {
     private CreateMovieSession createMovieSessionPanel;
 
     private CreateMovieTheater createMovieTheaterPanel;
+
+    private MovieSearch movieSearchPanel;
+
+    private MovieCatalog movieCatalogPanel;
+
     JMenuBar menuBar;
     JMenu fileMenu, helpMenu;
     JMenuItem newMenuItem, aboutMenuItem;
@@ -63,12 +68,17 @@ public class Main extends JFrame {
         mainPanel = new MainSection(this);
         createMovieSessionPanel = new CreateMovieSession(this);
         createMovieTheaterPanel = new CreateMovieTheater(this);
+        movieSearchPanel = new MovieSearch(this);
+        movieCatalogPanel = new MovieCatalog(this);
+
 
         // Ajout des panneaux au container
         contentPane.add(loginPanel, "login");
         contentPane.add(mainPanel, "main");
         contentPane.add(createMovieSessionPanel, "createmoviesession");
         contentPane.add(createMovieTheaterPanel, "createmovietheater");
+        contentPane.add(movieSearchPanel, "moviesearch");
+        contentPane.add(movieCatalogPanel, "moviecatalog");
 
         // Ajout du container à la fenêtre
         setContentPane(contentPane);

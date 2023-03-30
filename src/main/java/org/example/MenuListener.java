@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +19,7 @@ public class MenuListener implements ActionListener {
 
         } else if (e.getSource() == main.getAboutMenuItem()) {
             // Code pour gérer l'événement "A Propos"
+            JOptionPane.showMessageDialog(null, "Ceci est une boîte de dialogue d'information", "Information", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

@@ -10,10 +10,31 @@ public class EditMovieTheater extends JPanel {
     private Main main;
     private int movieTheaterId;
 
+    private JPanel panel;
+
     public EditMovieTheater(Main main, int movieTheaterId) {
         super();
         this.main = main;
         this.movieTheaterId = movieTheaterId;
+
+        // Création d'un JPanel pour le bouton "Revenir au menu principal"
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JButton goBackButton = new JButton("Revenir au menu principal");
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("main");
+            }
+        });
+        buttonPanel.add(goBackButton);
+        add(buttonPanel, BorderLayout.NORTH);
+
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         JLabel movie_theater_label = new JLabel("Nouveau nom de salle de cinéma : ");
         JTextField movie_theater_name = new JTextField();

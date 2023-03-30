@@ -14,9 +14,30 @@ public class CreateMovieTheater extends JPanel {
 
     private Main main;
 
+    private JPanel panel;
+
     public CreateMovieTheater(Main main) {
         super();
         this.main = main;
+
+        // Création d'un JPanel pour le bouton "Revenir au menu principal"
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JButton goBackButton = new JButton("Revenir au menu principal");
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("main");
+            }
+        });
+        buttonPanel.add(goBackButton);
+        add(buttonPanel, BorderLayout.NORTH);
+
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         JLabel movie_theater_name_label = new JLabel("Nom de la salle de cinéma : ");
         JTextField movie_theater = new JTextField();

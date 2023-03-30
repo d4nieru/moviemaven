@@ -30,11 +30,18 @@ public class MainSection extends JPanel {
 
         JButton refreshTableButton = new JButton("Actualiser la liste des salles de cinéma");
 
+        JButton movieSearchButton = new JButton("Ajouter un film dans le catalogue");
+
+        JButton seeMovieCatalogButton = new JButton("Voir le catalogue de films");
+
+
         this.add(button);
         this.add(createMovieTheaterButton);
         this.add(refreshTableButton);
         this.add(editMovieTheaterButton);
         this.add(deleteMovieTheaterButton);
+        this.add(movieSearchButton);
+        this.add(seeMovieCatalogButton);
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/moviemaven?user=root&password=");
@@ -127,48 +134,73 @@ public class MainSection extends JPanel {
                      JOptionPane.showMessageDialog(MainSection.this, "Veuillez sélectionner une salle de cinéma à modifier.");
                      return;
                  } else {
-                     // Récupérer l'ID de la salle de cinéma sélectionnée
-                     int movieTheaterId = (int) tableModel.getValueAt(selectedRow, 0);
+                     if (tableModel.getValueAt(selectedRow, 0) != null) {
+                         // Récupérer l'ID de la salle de cinéma sélectionnée
+                         int movieTheaterId = (int) tableModel.getValueAt(selectedRow, 0);
 
-                     // Rediriger vers le panel de modification de la salle de cinéma
-                     main.switchPanelId("editmovietheater", movieTheaterId);
+                         // Rediriger vers le panel de modification de la salle de cinéma
+                         main.switchPanelId("editmovietheater", movieTheaterId);
+                     } else {
+                         JOptionPane.showMessageDialog(MainSection.this, "Veuillez sélectionner une salle de cinéma à modifier.");
+                         return;
+                     }
                  }
              }
         });
 
         // Définir un ActionListener pour le bouton de suppression
         deleteMovieTheaterButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               // Vérifier si une salle de cinéma a été sélectionnée
-               int selectedRow = table.getSelectedRow();
-               if (selectedRow == -1) {
-                   JOptionPane.showMessageDialog(MainSection.this, "Veuillez sélectionner une salle de cinéma à supprimer.");
-                   return;
-               } else {
-                   // Récupérer l'ID de la salle de cinéma sélectionnée
-                   int movieTheaterId = (int) tableModel.getValueAt(selectedRow, 0);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Vérifier si une salle de cinéma a été sélectionnée
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(MainSection.this, "Veuillez sélectionner une salle de cinéma à supprimer.");
+                    return;
+                } else {
 
-                   // Demander confirmation à l'utilisateur
-                   int confirmation = JOptionPane.showConfirmDialog(MainSection.this, "Êtes-vous sûr de vouloir supprimer cette salle de cinéma ?");
+                    if (tableModel.getValueAt(selectedRow, 0) != null) {
 
-                   if (confirmation == JOptionPane.YES_OPTION) {
-                       // Supprimer la salle de cinéma de la base de données
-                       try {
-                           Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/moviemaven?user=root&password=");
-                           PreparedStatement stmt = conn.prepareStatement("DELETE FROM movie_theaters WHERE id = ?");
-                           stmt.setInt(1, movieTheaterId);
-                           stmt.executeUpdate();
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment effectuer cette action ?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
-                           // Actualiser la table
-                           refreshTableButton.doClick();
+                        if (dialogResult == JOptionPane.YES_OPTION) {
+                            // Récupérer l'ID de la salle de cinéma sélectionnée
+                            int movieTheaterId = (int) tableModel.getValueAt(selectedRow, 0);
 
-                       } catch (SQLException exception) {
-                           exception.printStackTrace();
-                       }
-                   }
-               }
-           }
+                            // Supprimer la salle de cinéma de la base de données
+                            try {
+                                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/moviemaven?user=root&password=");
+                                Statement stmt = conn.createStatement();
+                                stmt.executeUpdate("DELETE FROM movie_theaters WHERE id = " + movieTheaterId);
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                            }
+                        } else {
+                            return;
+                        }
+
+                        // Supprimer la ligne correspondante dans le tableau
+                        tableModel.removeRow(selectedRow);
+                    } else {
+                        JOptionPane.showMessageDialog(MainSection.this, "Veuillez sélectionner une salle de cinéma à supprimer.");
+                        return;
+                    }
+                }
+            }
+        });
+
+        movieSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("moviesearch");
+            }
+        });
+
+        seeMovieCatalogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("moviecatalog");
+            }
         });
     }
 }

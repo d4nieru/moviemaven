@@ -22,7 +22,8 @@ public class LoginSection extends JPanel {
         JLabel email_label = new JLabel("Email : ");
         JTextField email = new JTextField();
         JLabel pass_label = new JLabel("Mot de Passe : ");
-        JTextField password = new JTextField();
+        JPasswordField password = new JPasswordField();
+        password.setEchoChar('●');
 
 
         email.setPreferredSize(new Dimension(120,20));
@@ -68,6 +69,7 @@ public class LoginSection extends JPanel {
                             System.out.println("SQLException: " + ex.getMessage());
                             System.out.println("SQLState: " + ex.getSQLState());
                             System.out.println("VendorError: " + ex.getErrorCode());
+                            FailedDBConnection();
 
                         } finally {
                             if (stmt != null) {
@@ -77,6 +79,7 @@ public class LoginSection extends JPanel {
                                     System.out.println("SQLException: " + ex.getMessage());
                                     System.out.println("SQLState: " + ex.getSQLState());
                                     System.out.println("VendorError: " + ex.getErrorCode());
+                                    FailedDBConnection();
                                 }
                             }
 
@@ -87,6 +90,7 @@ public class LoginSection extends JPanel {
                                     System.out.println("SQLException: " + ex.getMessage());
                                     System.out.println("SQLState: " + ex.getSQLState());
                                     System.out.println("VendorError: " + ex.getErrorCode());
+                                    FailedDBConnection();
                                 }
                             }
                         }
@@ -104,6 +108,10 @@ public class LoginSection extends JPanel {
         this.add(loginButton);
 
         //this.add(secondButton);
+    }
+
+    private void FailedDBConnection() {
+        JOptionPane.showMessageDialog(null, "La connection vers la base de données a échoué :/", "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
     public String hashPassword(String password) {
