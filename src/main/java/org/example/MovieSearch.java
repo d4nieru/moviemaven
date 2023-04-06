@@ -1,8 +1,6 @@
 package org.example;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -28,6 +26,8 @@ public class MovieSearch extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     private JTextField searchField;
+
+    private JButton searchButton;
     private JComboBox<Movie> resultsBox;
     private DefaultComboBoxModel<Movie> resultsModel;
     private JLabel imageLabel;
@@ -44,20 +44,6 @@ public class MovieSearch extends JPanel implements ActionListener {
     public MovieSearch(Main main) {
         super(new BorderLayout());
         this.main = main;
-        setOpaque(true);
-
-        // Création d'un JPanel pour le bouton "Revenir au menu principal"
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        JButton goBackButton = new JButton("Revenir au menu principal");
-        goBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                main.switchPanel("main");
-            }
-        });
-        buttonPanel.add(goBackButton);
-        add(buttonPanel, BorderLayout.NORTH);
 
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -66,6 +52,8 @@ public class MovieSearch extends JPanel implements ActionListener {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         JPanel searchPanel = new JPanel(new FlowLayout());
+
+
 
         searchField = new JTextField(20);
         searchField.addActionListener(this);
@@ -108,6 +96,13 @@ public class MovieSearch extends JPanel implements ActionListener {
 
         add(moviePanel, BorderLayout.CENTER);
 
+        JButton goBackButton = new JButton("Revenir au menu principal");
+        goBackButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("main");
+            }
+        });
+
         JButton addButton = new JButton("Ajouter le film dans le catalogue");
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -115,11 +110,22 @@ public class MovieSearch extends JPanel implements ActionListener {
                 addMovieToDatabase(selectedMovie);
             }
         });
+        moviePanel.add(goBackButton);
         moviePanel.add(addButton);
+
+        searchButton = new JButton("Effectuer la recherche");
+        searchButton.addActionListener(this);
+        searchPanel.add(searchButton);
+        add(searchPanel, BorderLayout.NORTH);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == searchField) {
+        if (e.getSource() == searchField || e.getSource() == resultsBox || e.getSource() == searchButton) {
+            // Vérifier si une recherche a déjà été effectuée
+            if (resultsModel.getSize() == 0) {
+                JOptionPane.showMessageDialog(this, "Veuillez effectuer une recherche pour afficher les résultats.", "Aucun résultat", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             String searchTerm = searchField.getText();
             resultsModel.removeAllElements();
             if (!searchTerm.trim().isEmpty()) {
@@ -166,6 +172,12 @@ public class MovieSearch extends JPanel implements ActionListener {
         }
     }
     private void addMovieToDatabase(Movie movie) {
+
+        if (resultsModel.getSize() == 0) {
+            JOptionPane.showMessageDialog(this, "Veuillez effectuer une recherche et sélectionner un film avant de l'ajouter à la base de données.", "Aucun film sélectionné", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         String name = movie.getTitle();
         String release_date = movie.getYear();
         String imdb_id = movie.getImdbID();

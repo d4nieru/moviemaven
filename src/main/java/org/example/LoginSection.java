@@ -139,7 +139,6 @@ public class LoginSection extends JPanel {
     private void SuccessfulConnection() {
         JOptionPane.showMessageDialog(null,"Vous avez été authentifié avec succès !","Information",1);
         main.switchPanel("main");
-
     }
 
     private void InvalidCredentials() {

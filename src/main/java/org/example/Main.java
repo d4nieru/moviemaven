@@ -100,6 +100,8 @@ public class Main extends JFrame {
     public void switchPanel(String panelName) {
         // Change le panneau affiché en fonction du nom passé en paramètre
         cardLayout.show(contentPane, panelName);
+        contentPane.revalidate();
+        contentPane.repaint();
     }
 
     public void switchPanelId(String panelName, int movieTheaterId) {
@@ -113,6 +115,18 @@ public class Main extends JFrame {
             cardLayout.show(contentPane, panelName);
             contentPane.revalidate();
             contentPane.repaint();
+
+        } else if(panelName.equals("seemoviesessions")) {
+            // créer un nouveau panneau de modification de la salle de cinéma avec l'ID sélectionné
+            SeeMovieSessions seeMovieSessionsPanel = new SeeMovieSessions(this, movieTheaterId);
+            // ajouter le panneau à l'interface graphique
+
+            contentPane.add(seeMovieSessionsPanel, panelName);
+            cardLayout.show(contentPane, panelName);
+            contentPane.revalidate();
+            contentPane.repaint();
+        } else {
+
         }
         // ajouter d'autres conditions pour les autres panneaux
         // ...

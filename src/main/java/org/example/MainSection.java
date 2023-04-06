@@ -72,6 +72,21 @@ public class MainSection extends JPanel {
             // Créer une table à partir du modèle
             table = new JTable(tableModel);
 
+            table.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) { // Vérifiez si le double clic est détecté
+                        JTable target = (JTable) e.getSource();
+                        int row = target.getSelectedRow(); // Récupérez la ligne sélectionnée
+                        Object value = target.getValueAt(row, 0);
+                        if (value == null) {
+                            return; // Si la valeur est nulle, sortez de la méthode sans rien faire
+                        }
+                        int movieTheaterId = (int) target.getValueAt(row, 0); // Récupérez l'ID de la salle de cinéma sélectionnée
+                        main.switchPanelId("seemoviesessions", movieTheaterId); // Rediriger vers le panel de sessions qui sont reliés à la salle de cinéma
+                    }
+                }
+            });
+
             // Ajouter la table à l'interface graphique
             JScrollPane scrollPane = new JScrollPane(table);
             this.add(scrollPane);
