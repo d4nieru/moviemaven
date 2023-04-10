@@ -22,6 +22,8 @@ public class Main extends JFrame {
 
     private MovieCatalog movieCatalogPanel;
 
+    private BookSession bookSessionPanel;
+
     JMenuBar menuBar;
     JMenu fileMenu, helpMenu;
     JMenuItem newMenuItem, aboutMenuItem;
@@ -41,7 +43,7 @@ public class Main extends JFrame {
 
         // Créer le menu "Fichier" avec des éléments de menu "Nouveau"
         fileMenu = new JMenu("Fichier");
-        newMenuItem = new JMenuItem("Revenir au menu principal");
+        newMenuItem = new JMenuItem("...");
 
         helpMenu = new JMenu("Aide");
         aboutMenuItem = new JMenuItem("A Propos");
@@ -70,6 +72,7 @@ public class Main extends JFrame {
         createMovieTheaterPanel = new CreateMovieTheater(this);
         movieSearchPanel = new MovieSearch(this);
         movieCatalogPanel = new MovieCatalog(this);
+        bookSessionPanel = new BookSession(this);
 
 
         // Ajout des panneaux au container
@@ -79,6 +82,7 @@ public class Main extends JFrame {
         contentPane.add(createMovieTheaterPanel, "createmovietheater");
         contentPane.add(movieSearchPanel, "moviesearch");
         contentPane.add(movieCatalogPanel, "moviecatalog");
+        contentPane.add(bookSessionPanel, "booksession");
 
         // Ajout du container à la fenêtre
         setContentPane(contentPane);

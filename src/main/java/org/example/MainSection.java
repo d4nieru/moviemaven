@@ -34,6 +34,8 @@ public class MainSection extends JPanel {
 
         JButton seeMovieCatalogButton = new JButton("Voir le catalogue de films");
 
+        JButton bookSessionButton = new JButton("Réserver une séance");
+
 
         this.add(button);
         this.add(createMovieTheaterButton);
@@ -42,6 +44,7 @@ public class MainSection extends JPanel {
         this.add(deleteMovieTheaterButton);
         this.add(movieSearchButton);
         this.add(seeMovieCatalogButton);
+        this.add(bookSessionButton);
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/moviemaven?user=root&password=");
@@ -215,6 +218,13 @@ public class MainSection extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 main.switchPanel("moviecatalog");
+            }
+        });
+
+        bookSessionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.switchPanel("booksession");
             }
         });
     }
